@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>報告書の詳細</title>
+    <meta charset="UTF-8">
+    <link href="{% static 'cram/css/default.css' %}" rel="stylesheet">
+    <script type="text/javascript" src="{% static 'cram/js/index.js' %}"></script>
+  </head>
+  <body>
+    <div style="text-align: center;">
+    <h1>報告書の詳細</h1>
+    <h2>タイトル: {{ article.title }}</h2>
+    <small>Posted at:{{ article.posted_at }}</small>
+    <div>
+      <h2>本文: {{ article.body | linebreaksbr }}</h2>
+    </div>
+    <form action="{% url 'detail' article.id %}" method="post">
+      {% csrf_token %}
+      <div>
+        <label for="textInput">コメって！</label><br>
+        <textarea id="textInput" name="text" rows="3" placeholder="コメントはこちらから入力"></textarea>
+      </div>
+      <div>
+        <button type="submit">コメントを投稿します！</button>
+      </div>
+    </form>
+    <h2>コメント(新しい順)</h2>
+    {% if comments %}
+    {% for comment in comments %}
+    <div class="text">
+      <small>[{{ comment.posted_at }}]</small>
+      <div>
+        {{ comment.text | linebreaksbr }}
+      </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <p>コメント nothing</p>
+    {% endif %}
+    <hr>
+    <p>
+      <a href="{% url 'index' %}" id="modoru">トップページ</a>
+      <a href="{% url 'update' article.id %}" id="edit">投稿を編集</a>
+      <a href="{% url 'delete' article.id %}" id="delete">投稿を削除</a>
+    </p>
+  </div>
+  </body>
+</html>
