@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <link href="{% static 'cram/css/default.css' %}" rel="stylesheet">
     <script type="text/javascript" src="{% static 'cram/js/index.js' %}"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
   </head>
   <body>
     <div style="text-align: center;">
@@ -45,5 +46,22 @@
       <a href="{% url 'delete' article.id %}" id="delete">投稿を削除</a>
     </p>
   </div>
+  <canvas id="radar-chart" height="70px"></canvas>
+  <script type="text/javascript">
+
+    /* idが"radar-chart"の要素を取得 */
+    var ctx = document.getElementById("radar-chart");
+    
+    /* 上記要素にチャートを描画*/
+    var myRadarChart = new Chart(ctx, {
+        type: 'radar',
+        data: {
+            labels: ['国語', '算数', '理科', '社会', '英語'],
+            datasets: [{
+                label: "該当生徒",
+                data: [65, 76, 87, 75, 90]
+            }]},
+    });
+    </script>
   </body>
 </html>
