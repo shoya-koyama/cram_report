@@ -55,9 +55,24 @@
         type: 'radar',
         data: {
             labels: ['国語', '算数', '理科', '社会', '英語'],
-            datasets: [{
-                label: "該当生徒",
-                data: [50, 91, 85, 60, 70]
+            datasets: [
+            {   label: "Aさん",
+                data: [47, 89, 97, 34, 89],
+                backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                borderColor: 'rgba(255, 99, 132, 0.9)',
+                pointBackgroundColor: 'rgba(255, 99, 132, 0.9)',
+                pointBorderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 3,
+                pointRadius: 3,
+            },{
+                label: "全国平均",
+                data: [70, 47, 67, 76, 57],
+                backgroundColor: 'rgba(0, 0, 255, 0.6)',
+                borderColor: 'rgba(0, 0, 255, 0.9)',
+                pointBackgroundColor: 'rgba(0, 0, 255, 0.9)',
+                pointBorderColor: 'rgba(0, 0, 255, 1)',
+                borderWidth: 3,
+                pointRadius: 3,
             }]},
     });
     </script>
