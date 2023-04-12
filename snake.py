@@ -8,7 +8,7 @@ class Requza():
        self.length = 1
        self.positions = [((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2))]
        self.direction = random.choice([up, down, left, right])
-       self.color = (17, 24, 47)
+       self.color = (16, 27, 46)
        self.score = 0
 
    def get_head_position(self):
@@ -62,7 +62,7 @@ class Requza():
 class Food():
    def __init__(self):
        self.position = (0, 0)
-       self.color = (223, 163, 49)
+       self.color = (225, 161, 43)
        self.randomize_position()
 
    def randomize_position(self):
@@ -122,7 +122,7 @@ def main():
        requza.draw(surface)
        food.draw(surface)
        screen.blit(surface, (0, 0))
-       text = myfont.render("tensu {0}".format(requza.score), 1, (0, 0, 0))
+       text = myfont.render("mega enagy {0}".format(requza.score), 1, (0, 0, 0))
        screen.blit(text, (5, 10))
        pygame.display.update()
 
