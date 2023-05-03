@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ChatBot</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script>
+      $(function() {
+        $('form').on('submit', function(e) {
+          e.preventDefault();
+          $.ajax({
+            type: 'POST',
+            url: '/send_message',
+            data: $('form').serialize(),
+            success: function(response) {
+              $('#chat-area').append('<div class="chat-bubble">' + response + '</div>');
+            }
+          });
+          $('#user-input').val('');
+        });
+      });
+    </script>
+    <style>
+      .chat-bubble {
+        background-color: #d4d4d4;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 10px;
+      }
+
+      #chat-area {
+        max-height: 300px;
+        overflow-y: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>ChatBot</h1>
+    <div id="chat-area"></div>
+    <form>
+      <input type="text" id="user-input" name="message" required>
+      <input type="submit" value="Send">
+    </form>
+  </body>
+</html>
