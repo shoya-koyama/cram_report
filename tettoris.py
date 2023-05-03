@@ -62,11 +62,11 @@ class Tetromino:
 
     # テトロミノを描画する
     def draw(self, surface):
-        for position in self.blocks[self.rotation]:
-            x = self.x + position[0] * BLOCK_SIZE
-            y = self.y + position[1] * BLOCK_SIZE
+        for block in self.blocks[self.rotation]:
+            print(block)
+            x = self.x + block[0] * BLOCK_SIZE
+            y = self.y + block[1] * BLOCK_SIZE
             pygame.draw.rect(surface, self.color, (x, y, BLOCK_SIZE, BLOCK_SIZE))
-
 # 画面を初期化する
 pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
