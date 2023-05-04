@@ -6,3 +6,5 @@
 デザイン強化
 API連携
 chatbot表示できず
+格闘ゲーム作成（引用：@kankitu_man　pygameを用いて簡単な格闘ゲームを自作してみた　
+https://qiita.com/kankitu_man/items/b62a4f8fb3b58ad08cec）
