@@ -8,7 +8,7 @@ class Requza():
        self.length = 1
        self.positions = [((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2))]
        self.direction = random.choice([up, down, left, right])
-       self.color = (16, 27, 46)
+       self.color = (84, 194, 205)
        self.score = 0
 
    def get_head_position(self):
@@ -42,6 +42,9 @@ class Requza():
            r = pygame.Rect((p[0], p[1]), (GRIDSIZE, GRIDSIZE))
            pygame.draw.rect(surface, self.color, r)
            pygame.draw.rect(surface, (93, 216, 218), r, 1)
+           anim = pygame.image.load("pac.png")
+           surface.blit(anim, r)
+           pygame.draw.lines(surface, self.color, True, [(r.x, r.y), (r.x + r.width, r.y), (r.x + r.width, r.y + r.height), (r.x, r.y + r.height)], 3)
 
    def handle_keys(self):
        for event in pygame.event.get():
@@ -89,6 +92,8 @@ SCREEN_HEIGHT = 480
 GRIDSIZE = 20
 GRID_WIDTH = SCREEN_HEIGHT / GRIDSIZE
 GRID_HEIGHT = SCREEN_WIDTH / GRIDSIZE
+border = pygame.Rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
+
 
 up = (0, -1)
 down = (0, 1)
