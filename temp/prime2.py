@@ -1,4 +1,3 @@
-
 def is_prime(num):
     if num < 2:
         return False
@@ -7,6 +6,7 @@ def is_prime(num):
             return False
     return True
 
+# n^3 - 7n + 9 = (n-1)(n^2 + n - 9) + 18
 for n in range(-1224, 1224):
-    if n**3 - 7*n + 9 > n and is_prime(n**3 - 7*n + 9):
+    if is_prime(n**3 - 7*n + 9):
         print(n)
