@@ -44,7 +44,10 @@ class Enemy(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         image = pygame.image.load('sun.jpg')
-        self.image = pygame.Surface((image.get_width(), image.get_height()))
+        new_width = 50 # 新しい幅
+        new_height = 50 # 新しい高さ
+        image = pygame.transform.scale(image, (new_width, new_height))
+        self.image = pygame.Surface((new_width, new_height))
         self.image.blit(image, (0, 0))
         self.rect = self.image.get_rect()
         self.rect.x = random.randrange(0, WINDOW_WIDTH - self.rect.width)
