@@ -25,7 +25,7 @@ clock = pygame.time.Clock()
 class Fighter(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        image = pygame.image.load('shoya.jpg')
+        image = pygame.image.load('pac.png')
         new_width = 100 # 新しい幅
         new_height = 100 # 新しい高さ
         image = pygame.transform.scale(image, (new_width, new_height))
