@@ -1,5 +1,7 @@
+n = int(input())
+s = input()
+
 def winner(n,s):
-    1 <= n <= 100
     if s.count('T') < s.count('A'):
         return 'A'
     elif s.count('T') > s.count('A'):
@@ -9,7 +11,4 @@ def winner(n,s):
             return 'A'
         elif s[-1] == 'A':
             return 'T'
-        
-print(winner(5,'TTAAT'))
-print(winner(6,'ATTATA'))
-print(winner(1,'A'))
+print(winner(n, s))
