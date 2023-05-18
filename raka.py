@@ -43,8 +43,9 @@ class Fighter(pygame.sprite.Sprite):
 class Enemy(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.Surface((50, 50))
-        self.image.fill(RED)
+        image = pygame.image.load('sun.jpg')
+        self.image = pygame.Surface((image.get_width(), image.get_height()))
+        self.image.blit(image, (0, 0))
         self.rect = self.image.get_rect()
         self.rect.x = random.randrange(0, WINDOW_WIDTH - self.rect.width)
         self.rect.y = random.randrange(-100, -40)
