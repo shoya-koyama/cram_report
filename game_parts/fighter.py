@@ -5,7 +5,7 @@ from game_parts.caluclation_parts import pythagoras_theorem as pyth
 
 
 class Fighter:
-    def __init__(self, position, size, gravity, move_speed, contact, rigit_time):
+    def __init__(self, position, size, gravity, move_speed, contact, rigit_time, direction):
         self.pos_x = position[0]
         self.pos_y = position[1]
         self.width = size[0]
@@ -14,11 +14,25 @@ class Fighter:
         self.move_speed = move_speed
         self.contact = contact
         self.rigit_time = rigit_time
+        self.direction = direction # キャラクターの向きを表す変数を定義する
+        
+        
 
     def figure(self):
+        if self.direction == "left":
+            image = pygame.image.load("pac.png")
+        else:
+            image = pygame.image.load("sun.png")
+        image = pygame.transform.scale(image, (self.width, self.height)) # 画像をリサイズ
+        image_rect = image.get_rect() # 画像の矩形を取得
+        # 画像矩形の座標を設定
+        image_rect.x = self.pos_x
+        image_rect.y = self.pos_y
+    
+        # 画像を描画
+        main.SURFACE.blit(image, image_rect)
         
-        rect = (self.pos_x, self.pos_y, self.width, self.height)
-        pygame.draw.rect(main.SURFACE, (255, 0, 0), rect)
+        
 
     def move(self, jump_speed, player_move):
         
