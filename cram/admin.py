@@ -1,16 +1,19 @@
 # admin.py
 from django.contrib import admin
 from import_export import resources
-from import_export.admin import ImportExportModelAdmin,ImportExportMixin, ExportMixin , ImportMixin  #修正
-from import_export.admin import ExportActionModelAdmin   #追加
-from import_export import fields   #追加
-from import_export.widgets import ManyToManyWidget   #追加
+from import_export.admin import ImportExportMixin
+from import_export.admin import ExportActionModelAdmin  
+from import_export import fields  
+from import_export.widgets import ManyToManyWidget  
 from django.http import HttpResponse
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.units import inch
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.cidfonts import UnicodeCIDFont
+import csv
+import codecs
+
 
 
 from .models import Article, Comment
@@ -40,13 +43,11 @@ class ArticleAdmin(ImportExportMixin, ExportActionModelAdmin, admin.ModelAdmin):
     # django-import-exportsの設定
     resource_class = ArticleResource
     @admin.action(description='Export selected posts as PDF')
-    def export_as_pdf(self, request, queryset):
+    def pdfer(self, request, queryset):
         response = HttpResponse(content_type='application/pdf')
-        response['Content-Disposition'] = 'attachment; filename="posts.pdf"'
+        response['Content-Disposition'] = 'attachment; filename="model.pdf"'
 
         p = canvas.Canvas(response, pagesize=letter)
-
-        # 日本語フォントを指定
         p.setFont('HeiseiKakuGo-W5', 12)
 
         x = 1 * inch
@@ -60,15 +61,39 @@ class ArticleAdmin(ImportExportMixin, ExportActionModelAdmin, admin.ModelAdmin):
             p.drawString(x, y - 80, f'Content: {post.like}')
 
             p.showPage()
-
-            # 新しいページのためにフォントを再設定
             p.setFont('HeiseiKakuGo-W5', 12)
 
         p.save()
 
         return response
+    
+    def export_action(self, request, queryset):
+        response = super().export_action(request, queryset)
+        response['Content-Type'] = 'text/csv; charset=utf-8'
+        response['Content-Disposition'] = 'attachment; filename="export.csv"'
 
-    actions = [export_as_pdf]
+        # ヘッダー行を作成する
+        header = [field.verbose_name for field in queryset.model._meta.fields]
+
+        # カテゴリーごとにデータ行を作成する
+        csv_data = []
+        for obj in queryset:
+            data_row = []
+            for field in obj._meta.fields:
+                value = field.value_from_object(obj)
+                if isinstance(value, str):
+                    # 文字列の場合はクォーテーションで囲む
+                    data_row.append('"{0}"'.format(value))
+                else:
+                    data_row.append(str(value))
+            csv_data.append(data_row)
+
+        # CSVファイルを作成してresponseに設定する
+        csv_file = codecs.iterencode('\n'.join(','.join(row) for row in [header] + csv_data), 'utf-8-sig')
+        response.content = b','.join(csv_file)
+
+        return response
+    actions = [pdfer,export_action]
 
 @admin.register(Comment)
 class CommentAdmin(ImportExportMixin, ExportActionModelAdmin, admin.ModelAdmin):
@@ -79,13 +104,12 @@ class CommentAdmin(ImportExportMixin, ExportActionModelAdmin, admin.ModelAdmin):
     # django-import-exportsの設定
     resource_class = CommentResource
     @admin.action(description='Export selected posts as PDF')
-    def export_as_pdf(self, request, queryset):
+    def pdfer(self, request, queryset):
         response = HttpResponse(content_type='application/pdf')
-        response['Content-Disposition'] = 'attachment; filename="posts.pdf"'
+        response['Content-Disposition'] = 'attachment; filename="model.pdf"'
 
         p = canvas.Canvas(response, pagesize=letter)
-
-        # 日本語フォントを指定
+  
         p.setFont('HeiseiKakuGo-W5', 12)
 
         x = 1 * inch
@@ -97,12 +121,35 @@ class CommentAdmin(ImportExportMixin, ExportActionModelAdmin, admin.ModelAdmin):
             p.drawString(x, y - 40, f'Content: {post.article}')
 
             p.showPage()
-
-            # 新しいページのためにフォントを再設定
             p.setFont('HeiseiKakuGo-W5', 12)
-
         p.save()
+        return response
+    
+    def export_action(self, request, queryset):
+        response = super().export_action(request, queryset)
+        response['Content-Type'] = 'text/csv; charset=utf-8'
+        response['Content-Disposition'] = 'attachment; filename="export.csv"'
+
+        # ヘッダー行を作成する
+        header = [field.verbose_name for field in queryset.model._meta.fields]
+
+        # カテゴリーごとにデータ行を作成する
+        csv_data = []
+        for obj in queryset:
+            data_row = []
+            for field in obj._meta.fields:
+                value = field.value_from_object(obj)
+                if isinstance(value, str):
+                    # 文字列の場合はクォーテーションで囲む
+                    data_row.append('"{0}"'.format(value))
+                else:
+                    data_row.append(str(value))
+            csv_data.append(data_row)
+
+        # CSVファイルを作成してresponseに設定する
+        csv_file = codecs.iterencode('\n'.join(','.join(row) for row in [header] + csv_data), 'utf-8-sig')
+        response.content = b','.join(csv_file)
 
         return response
 
-    actions = [export_as_pdf]
+    actions = [pdfer,export_action]
