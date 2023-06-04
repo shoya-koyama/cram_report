@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Assignment 14-1-2</title>
+    <link rel="stylesheet" type="text/css" href="weather/weather.css">
+    <script src="weather/weather.js"></script>
+  </head>
+
+  <body>
+    
+    <div id="container">
+      <h1>天気取得</h1>
+      <p>
+        <input id="input-address" type="text">
+        <button onclick="findWeather()">天気を見る</button>
+      </p>
+
+      <div id="left">
+        <h2><span id="city"> *** </span> の天気</h2>
+        <table>
+          <tr>
+            <th>天気</th>
+            <td id="td-weather"> *** </td>
+          </tr>
+          <tr>
+            <th>気温 (Degree)</th>
+            <td id="td-temperature"> *** </td>
+          </tr>
+          <tr>
+            <th>湿度 (%)</th>
+            <td id="td-humidity"> *** </td>
+          </tr>
+          <tr>
+            <th>気圧 (hPa)</th>
+            <td id="td-pressure"> *** </td>
+          </tr>
+        </table>
+      </div>
+
+      <div id="right">
+        <ul>
+          <li>緯度 : <span id="latitude">***</span></li>
+          <li>経度 : <span id="longitude">***</span></li>
+        </ul>
+        <div id="map"></div>
+      </div>
+    </div>
+
+   
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAYSeZRkkIEUkvEc1Ut7UYs7q0lLRZds94&callback=initMap"
+      async defer></script>
+  </body>
+
+</html>
