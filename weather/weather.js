@@ -1,5 +1,5 @@
 let API_KEY_GOOGLE = 'AIzaSyAYSeZRkkIEUkvEc1Ut7UYs7q0lLRZds94';
-let API_KEY_WEATHER = '4ed5590aa501df592a75afb996eddbee';
+let API_KEY_WEATHER = '****';
 
 let map;
 let marker;
