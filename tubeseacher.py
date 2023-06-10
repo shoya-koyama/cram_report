@@ -31,4 +31,4 @@ def search_videos_by_genre(genre, max_results=5):
         print()
 
 # ジャンルに基づいて動画を検索して結果を表示
-search_videos_by_genre("シバター", max_results=10)
+search_videos_by_genre("宇多田ヒカル", max_results=10)
