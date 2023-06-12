@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>YouTube Search Results</title>
+</head>
+<body>
+    <h1>YouTube Search Results</h1>
+    <ul>
+        {% for video in videos %}
+        <li>
+            <a href="{{ video.url }}">{{ video.title }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
