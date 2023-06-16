@@ -26,14 +26,17 @@ def search_videos(keyword, max_results=5):
     # 動画検索のリクエストを実行し、レスポンスを取得
     response = request.execute()
 
-    # 検索結果のタイトルとURLをリストとして格納
+    # 検索結果のタイトル、URL、サムネイル、説明文をリストとして格納
     videos = []
     for item in response["items"]:
         video_title = item["snippet"]["title"]
         video_url = "https://www.youtube.com/watch?v=" + item["id"]["videoId"]
-        videos.append({"title": video_title, "url": video_url})
+        thumbnail_url = item["snippet"]["thumbnails"]["default"]["url"]
+        video_description = item["snippet"]["description"]
+        videos.append({"title": video_title, "url": video_url, "thumbnail": thumbnail_url, "description": video_description})
 
     return videos
+
 
 @app.route("/")
 def index():

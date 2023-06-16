@@ -26,8 +26,8 @@ class Fighter(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         image = pygame.image.load('pac.png')
-        new_width = 100 # 新しい幅
-        new_height = 100 # 新しい高さ
+        new_width = 10 # 新しい幅
+        new_height = 10 # 新しい高さ
         image = pygame.transform.scale(image, (new_width, new_height))
         self.image = pygame.Surface((new_width, new_height))
         self.image.blit(image, (0, 0))

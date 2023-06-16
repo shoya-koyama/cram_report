@@ -2,12 +2,58 @@
 <html>
 <head>
     <title>YouTube Search Results</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 15px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            transition: background-color 0.3s ease;
+        }
+
+        li:hover {
+            background-color: #f9f9f9;
+        }
+
+        li a {
+            color: #007bff;
+            text-decoration: none;
+            margin-left: 10px;
+            flex-grow: 1;
+        }
+
+        li a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
     <h1>YouTube Search Results</h1>
     <ul>
         {% for video in videos %}
         <li>
+            <img src="{{ video.thumbnail }}" alt="{{ video.title }}" width="120" height="90">
             <a href="{{ video.url }}">{{ video.title }}</a>
         </li>
         {% endfor %}
