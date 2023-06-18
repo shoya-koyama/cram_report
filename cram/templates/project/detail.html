@@ -23,8 +23,27 @@
         <textarea id="textInput" name="text" rows="3" placeholder="コメントはこちらから入力"></textarea>
       </div>
       <div>
-        <button type="submit">コメントを投稿します！</button>
+        <button class="report-button" type="submit">コメント投稿</button>
       </div>
+      <style>
+        /* Add this CSS code within the <head> tag or in an external CSS file */
+        .report-button {
+          background-color: #f4b887; /* Set the background color */
+          color: white; /* Set the text color */
+          padding: 10px 20px; /* Adjust the padding */
+          font-size: 16px; /* Adjust the font size */
+          border: none; /* Remove the border */
+          cursor: pointer; /* Add a cursor pointer */
+          border-radius: 5px; /* Add rounded corners */
+        }
+      
+        /* Optional: Add hover effect */
+        .report-button:hover {
+          background-color: #45a049;
+        }
+      </style>
+      
+      
     </form>
     <h2>コメント(新しい順)</h2>
     {% if comments %}
