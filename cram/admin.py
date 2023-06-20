@@ -13,6 +13,7 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.cidfonts import UnicodeCIDFont
 import csv
 import codecs
+from reversion.admin import VersionAdmin
 
 
 
@@ -35,7 +36,7 @@ class CommentResource(resources.ModelResource):
 
 
 @admin.register(Article)
-class ArticleAdmin(ImportExportMixin, ExportActionModelAdmin, admin.ModelAdmin):
+class ArticleAdmin(ImportExportMixin, ExportActionModelAdmin, VersionAdmin):
     # ImportExportModelAdminを利用するようにする
     ordering = ['id']
     list_display = ('id', 'title', 'body','posted_at', 'published_at', 'like')
@@ -96,7 +97,7 @@ class ArticleAdmin(ImportExportMixin, ExportActionModelAdmin, admin.ModelAdmin):
     actions = [pdfer,export_action]
 
 @admin.register(Comment)
-class CommentAdmin(ImportExportMixin, ExportActionModelAdmin, admin.ModelAdmin):
+class CommentAdmin(ImportExportMixin, ExportActionModelAdmin, VersionAdmin):
     # ImportExportModelAdminを利用するようにする
     ordering = ['id']
     list_display = ('id', 'text','posted_at','article')
