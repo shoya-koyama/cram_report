@@ -13,24 +13,12 @@ RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 
-# ゲームの初期化
-pygame.init()
-pygame.mixer.init()
-screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
-pygame.display.set_caption("よけて！！")
-clock = pygame.time.Clock()
-
-# フォントの設定
-FONT_SIZE = 24
-FONT_COLOR = BLACK
-FONT = pygame.font.SysFont("Arial", FONT_SIZE)
-
 # スプライトクラス
 class Fighter(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.Surface((50, 50))
-        self.image.fill(BLUE)
+        image = pygame.image.load('pac.png')  # Ensure this image file is in the correct path
+        self.image = pygame.transform.scale(image, (50, 50))
         self.rect = self.image.get_rect()
         self.rect.center = (WINDOW_WIDTH // 2, WINDOW_HEIGHT - 50)
         self.speed = 5
@@ -45,62 +33,77 @@ class Fighter(pygame.sprite.Sprite):
 
 # 敵クラス
 class Enemy(pygame.sprite.Sprite):
-    def __init__(self, speed):
+    def __init__(self):
         super().__init__()
-        self.image = pygame.Surface((50, 50))
-        self.image.fill(RED)
+        image = pygame.image.load('sun.jpg')  # Ensure this image file is in the correct path
+        self.image = pygame.transform.scale(image, (50, 50))
         self.rect = self.image.get_rect()
         self.rect.x = random.randrange(0, WINDOW_WIDTH - self.rect.width)
         self.rect.y = random.randrange(-100, -40)
-        self.speed = speed
+        self.speed = random.randrange(1, 8)
 
     def update(self):
         self.rect.y += self.speed
         if self.rect.top > WINDOW_HEIGHT + 10:
-            self.kill()
+            self.rect.x = random.randrange(0, WINDOW_WIDTH - self.rect.width)
+            self.rect.y = random.randrange(-100, -40)
+            self.speed = random.randrange(1, 8)
 
 
-# スプライトグループ
-all_sprites = pygame.sprite.Group()
-enemies = pygame.sprite.Group()
-player = Fighter()
-all_sprites.add(player)
+class Game:
+    def __init__(self):
+        pygame.init()
+        pygame.mixer.init()
+        self.screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+        pygame.display.set_caption("よけて！！")
+        self.clock = pygame.time.Clock()
+        self.running = True
+        self.all_sprites = pygame.sprite.Group()
+        self.enemies = pygame.sprite.Group()
+        self.player = Fighter()
+        self.all_sprites.add(self.player)
+        for i in range(10):
+            enemy = Enemy()
+            self.all_sprites.add(enemy)
+            self.enemies.add(enemy)
+        self.myfont = pygame.font.SysFont("monospace", 16)
 
-# 敵を生成
-ENEMY_COUNT = 10
-ENEMY_SPEED = 5
-for i in range(ENEMY_COUNT):
-    enemy = Enemy(ENEMY_SPEED)
-    all_sprites.add(enemy)
-    enemies.add(enemy)
+    def event_process(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                self.running = False
 
-# メインループ
-running = True
-myfont = FONT.render("Score: 0", True, FONT_COLOR)
+    def update(self):
+        self.player.score += 1
+        self.all_sprites.update()
+        hits = pygame.sprite.spritecollide(self.player, self.enemies, False)
+        if hits:
+            self.running = False
+            print(self.player.score)
 
-while running:
-    clock.tick(FPS)
-    player.score += 1
+    def draw(self):
+        self.screen.fill(WHITE)
+        self.all_sprites.draw(self.screen)
+        score_text = self.myfont.render("Score: " + str(self.player.score), 1, BLACK)
+        self.screen.blit(score_text, (5, 10))
+        pygame.display.update()
 
-    # イベント処理
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
+    def show_game_over(self):
+        game_over_text = self.myfont.render("Game Over", 1, RED)
+        self.screen.blit(game_over_text, (WINDOW_WIDTH//2 - game_over_text.get_width()//2, WINDOW_HEIGHT//2))
+        pygame.display.update()
+        pygame.time.wait(3000)
 
-    # 更新処理
-    all_sprites.update()
+    def run(self):
+        while self.running:
+            self.clock.tick(FPS)
+            self.event_process()
+            self.update()
+            self.draw()
+        self.show_game_over()
+        pygame.quit()
 
-    # 当たり判定
-    hits = pygame.sprite.spritecollide(player, enemies, False)
-    if hits:
-        running = False
-        
-    # 描画処理
-    screen.fill(WHITE)
-    all_sprites.draw(screen)
-    score_text = FONT.render("Score: {}".format(player.score), True, FONT_COLOR)
-    score_rect = score_text.get_rect(center=(WINDOW_WIDTH / 2, FONT_SIZE))
-    screen.blit(score_text, score_rect)
-    pygame.display.update()
 
-pygame.quit()
+if __name__ == "__main__":
+    game = Game()
+    game.run()
