@@ -1,0 +1,25 @@
+body{
+    text-align: center;
+}
+
+
+h3{
+    background-color: rgb(18, 129, 194);
+    color: aliceblue;
+    margin-right: 70px;
+    padding-left: 20px;
+    margin-bottom: 3px;
+}
+
+
+p{
+    border: solid 2px;
+    border-bottom: solid 10px;
+    border-color: blanchedalmond;
+    width: 400px;
+    padding: 8px;
+    padding-bottom: 15px;
+    background-color: rgb(247, 235, 220);
+    text-align: center;
+
+}

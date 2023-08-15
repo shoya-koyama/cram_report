@@ -13,7 +13,7 @@ from django.core.files.storage import FileSystemStorage
 # YouTube Data APIの設定
 api_service_name = "youtube"
 api_version = "v3"
-api_key = "AIzaSyBq7E-kpQTQ2fHoou8953G2cPGnMMXfJTs"
+api_key = "***"
 youtube = build(api_service_name, api_version, developerKey=api_key)
 
 # Create your views here.
@@ -56,7 +56,7 @@ def index(request):
             return redirect(detail, article.id)
         
     else:  # Default keyword when loading the page for the first time (optional).
-        videos = search_videos("数学", max_results=10)
+        videos = search_videos("塾講師", max_results=10)
 
     articles = Article.objects.order_by('-posted_at')
     context = {
@@ -174,3 +174,6 @@ def upload_video(request):
 
     # メッセージ付きのページにリダイレクトするか、メッセージとともにここでテンプレートをレンダリングすることもできます。
 
+
+def room(request):
+    return render(request, "project/room.html")

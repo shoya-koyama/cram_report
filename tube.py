@@ -9,7 +9,7 @@ api_key = "秘密"
 
 # YouTube Data APIのクライアントを作成
 youtube = googleapiclient.discovery.build(api_service_name, api_version, developerKey=api_key)
-
+A
 app = Flask(__name__)
 
 def search_videos(keyword, max_results=5):

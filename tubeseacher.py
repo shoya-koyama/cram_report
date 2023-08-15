@@ -4,7 +4,7 @@ import googleapiclient.discovery
 # YouTube Data APIの設定
 api_service_name = "youtube"
 api_version = "v3"
-api_key = "秘密"
+api_key = "**"
 
 
 # YouTube Data APIのクライアントを作成
