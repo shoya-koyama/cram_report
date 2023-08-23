@@ -127,3 +127,47 @@ def get_weather_df(city_name, api_key):
 # city_name = "Tokyo"
 # weather_df = get_weather_df(city_name, api_key)
 # print(weather_df)
+
+"""
+了解しました。一日ごとの気温情報を取得するために、OpenWeatherMap APIのdailyエンドポイントを使用します。
+
+このタスクを完了するためには、次の手順を実行します：
+
+OpenWeatherMap APIを使用して一日ごとの気温情報を取得します。
+Matplotlibを使用してデータをグラフにプロットします。
+カーソルが点の上にあるときに気温情報を表示するようにイベントハンドラを設定します。
+以下にコードを示します：
+
+まず、必要なライブラリをインストールします。この環境ではインターネットアクセスができないため、以下のコードは例示のみとなります。"""
+import requests
+import matplotlib.pyplot as plt
+
+# APIエンドポイントとキーの定義
+url = "http://api.openweathermap.org/data/2.5/forecast/daily"
+params = {
+    'q': 'Tokyo',  # 例として東京の天気情報を取得
+    'appid': 'YOUR_API_KEY',  # あなたのAPIキーを指定
+    'units': 'metric',  # Celsiusでの温度を取得するためのオプション
+    'cnt': 7  # 7日分の予報を取得
+}
+
+# APIリクエストの実行
+response = requests.get(url, params=params)
+data = response.json()
+
+# 日付と気温のデータを取得
+dates = [item['dt_txt'] for item in data['list']]
+temperatures = [item['main']['temp'] for item in data['list']]
+
+fig, ax = plt.subplots()
+line, = ax.plot(dates, temperatures, '-o', picker=5)  # 5 points tolerance
+
+# カーソルが点の上にあるときのイベントハンドラ
+def on_pick(event):
+    ind = event.ind[0]
+    date = dates[ind]
+    temp = temperatures[ind]
+    plt.gca().set_title(f"Date: {date}, Temperature: {temp}°C")
+
+fig.canvas.mpl_connect('pick_event', on_pick)
+plt.show()
