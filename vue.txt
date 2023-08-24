@@ -1,0 +1,94 @@
+もちろん、Vue.js 3 の基本的なサンプルコードを以下に提供します。
+
+プロジェクトのセットアップ
+まず、Vue CLI を使用して新しい Vue 3 プロジェクトを作成します。
+
+bash
+Copy code
+vue create my-vue3-app
+プロンプトが表示されたら、Vue 3 を選択します。
+
+サンプルコード
+単純なカウンターアプリケーション
+App.vue の内容を以下のように変更します。
+
+vue
+Copy code
+<template>
+  <div>
+    <h1>Simple Counter App</h1>
+    <p>Count: {{ count }}</p>
+    <button @click="increment">Increment</button>
+    <button @click="decrement">Decrement</button>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      count: 0
+    };
+  },
+  methods: {
+    increment() {
+      this.count++;
+    },
+    decrement() {
+      if (this.count > 0) {
+        this.count--;
+      }
+    }
+  }
+};
+</script>
+
+<style scoped>
+h1 {
+  color: #42b983;
+}
+</style>
+リスト表示
+以下は、リストのアイテムを表示し、アイテムをクリックすることで削除できるシンプルなリスト表示の例です。
+
+vue
+Copy code
+<template>
+  <div>
+    <h1>Simple List App</h1>
+    <ul>
+      <li v-for="(item, index) in items" :key="index" @click="removeItem(index)">
+        {{ item }}
+      </li>
+    </ul>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      items: ['Apple', 'Banana', 'Cherry']
+    };
+  },
+  methods: {
+    removeItem(index) {
+      this.items.splice(index, 1);
+    }
+  }
+};
+</script>
+
+<style scoped>
+h1 {
+  color: #42b983;
+}
+li {
+  cursor: pointer;
+}
+</style>
+これは Vue.js 3 の非常に基本的なサンプルコードです。Vue 3 は、Composition API などの新しい機能を持っていますが、上記のサンプルは Options API を使用しています。もし、Composition API のサンプルや他の詳細な例が必要であれば、お知らせください。
+
+
+
+
