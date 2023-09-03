@@ -1,0 +1,196 @@
+<template>
+  <div>
+    <div ref="map" style="width: 100%; height: 400px;"></div>
+  </div>
+</template>
+
+<script>
+import mapboxgl from 'mapbox-gl';
+import axios from 'axios';
+
+export default {
+  name: 'MapboxComponent',
+  data() {
+    return {
+      map: null,
+      geojsonUrl: 'YOUR_GEOJSON_URL_HERE',
+    };
+  },
+  mounted() {
+    this.loadMap();
+  },
+  methods: {
+    async loadMap() {
+      // GeoJSON データの取得
+      const response = await axios.get(this.geojsonUrl);
+      const geojsonData = response.data;
+
+      // Mapbox の初期化
+      mapboxgl.accessToken = 'YOUR_MAPBOX_ACCESS_TOKEN_HERE';
+      this.map = new mapboxgl.Map({
+        container: this.$refs.map,
+        style: 'mapbox://styles/mapbox/streets-v11',
+        center: [139.6917, 35.6895],  // 東京の緯度経度
+        zoom: 10
+      });
+
+      // GeoJSON データを地図上に追加
+      this.map.on('load', () => {
+        this.map.addSource('points', {
+          'type': 'geojson',
+          'data': geojsonData
+        });
+
+        this.map.addLayer({
+          'id': 'points',
+          'type': 'circle',
+          'source': 'points',
+          'paint': {
+            'circle-radius': 6,
+            'circle-color': '#B42222'
+          }
+        });
+      });
+    }
+  }
+};
+</script>
+
+<style>
+/* 必要に応じてスタイルを追加 */
+</style>
+
+/line
+// ...（前のコードの一部）
+
+methods: {
+    async loadMap() {
+      // GeoJSON データの取得
+      const response = await axios.get(this.geojsonUrl);
+      const geojsonData = response.data;
+
+      // 点のデータから LineString ジオメトリを生成
+      const lineData = {
+        type: 'Feature',
+        geometry: {
+          type: 'LineString',
+          coordinates: geojsonData.features.map(feature => feature.geometry.coordinates)
+        }
+      };
+
+      // Mapbox の初期化
+      mapboxgl.accessToken = 'YOUR_MAPBOX_ACCESS_TOKEN_HERE';
+      this.map = new mapboxgl.Map({
+        container: this.$refs.map,
+        style: 'mapbox://styles/mapbox/streets-v11',
+        center: [139.6917, 35.6895],  // 東京の緯度経度
+        zoom: 10
+      });
+
+      // GeoJSON データを地図上に追加
+      this.map.on('load', () => {
+        // 線レイヤーを追加
+        this.map.addSource('line', {
+          'type': 'geojson',
+          'data': lineData
+        });
+
+        this.map.addLayer({
+          'id': 'line',
+          'type': 'line',
+          'source': 'line',
+          'layout': {
+            'line-join': 'round',
+            'line-cap': 'round'
+          },
+          'paint': {
+            'line-color': '#FF5733',
+            'line-width': 6
+          }
+        });
+
+        // 点レイヤーも追加したい場合は、以下のコードを続けて追加
+        this.map.addSource('points', {
+          'type': 'geojson',
+          'data': geojsonData
+        });
+
+        this.map.addLayer({
+          'id': 'points',
+          'type': 'circle',
+          'source': 'points',
+          'paint': {
+            'circle-radius': 6,
+            'circle-color': '#B42222'
+          }
+        });
+      });
+    }
+  }
+// ...（前のコードの一部）
+
+/circle
+// ...（前のコードの一部）
+
+methods: {
+    async loadMap() {
+      // GeoJSON データの取得
+      const response = await axios.get(this.geojsonUrl);
+      const geojsonData = response.data;
+
+      // Mapbox の初期化
+      mapboxgl.accessToken = 'YOUR_MAPBOX_ACCESS_TOKEN_HERE';
+      this.map = new mapboxgl.Map({
+        container: this.$refs.map,
+        style: 'mapbox://styles/mapbox/streets-v11',
+        center: [139.6917, 35.6895],  // 東京の緯度経度
+        zoom: 10
+      });
+
+      this.map.on('load', () => {
+        // 台風の進路上の点を追加
+        this.map.addSource('points', {
+          'type': 'geojson',
+          'data': geojsonData
+        });
+
+        this.map.addLayer({
+          'id': 'points',
+          'type': 'circle',
+          'source': 'points',
+          'paint': {
+            'circle-radius': 6,
+            'circle-color': '#B42222'
+          }
+        });
+
+        // 3時間ごとの点に対して暴風域を表す円を描画
+        for (let i = 0; i < geojsonData.features.length; i += 3) {
+          const feature = geojsonData.features[i];
+          const radius = feature.properties.radius;  // 暴風域の半径情報
+
+          const circleSource = {
+            'type': 'geojson',
+            'data': {
+              'type': 'FeatureCollection',
+              'features': [feature]
+            }
+          };
+
+          this.map.addSource(`circle-${i}`, circleSource);
+
+          this.map.addLayer({
+            'id': `circle-${i}`,
+            'type': 'circle',
+            'source': `circle-${i}`,
+            'paint': {
+              'circle-radius': radius,
+              'circle-opacity': 0.5,
+              'circle-color': '#33A1C9'
+            }
+          });
+        }
+      });
+    }
+  }
+// ...（前のコードの一部）
