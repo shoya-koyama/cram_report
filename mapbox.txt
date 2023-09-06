@@ -194,3 +194,92 @@ methods: {
     }
   }
 // ...（前のコードの一部）
+
+--------------------------
+//togle
+
+<template>
+  <div>
+    <div ref="map" style="width: 100%; height: 400px;"></div>
+    <button @click="toggleData">
+      {{ showingTyphoonData ? 'Switch to Other Weather Data' : 'Switch to Typhoon Data' }}
+    </button>
+  </div>
+</template>
+
+<script>
+import mapboxgl from 'mapbox-gl';
+
+export default {
+  data() {
+    return {
+      map: null,
+      showingTyphoonData: true,  // Initially showing typhoon data
+      typhoonDataUrl: 'URL_TO_TYPHOON_GEOJSON',
+      otherWeatherDataUrl: 'URL_TO_OTHER_WEATHER_GEOJSON'
+    };
+  },
+  mounted() {
+    this.initializeMap();
+  },
+  methods: {
+    initializeMap() {
+      mapboxgl.accessToken = 'YOUR_MAPBOX_ACCESS_TOKEN_HERE';
+      this.map = new mapboxgl.Map({
+        container: this.$refs.map,
+        style: 'mapbox://styles/mapbox/streets-v11',
+        center: [139.6917, 35.6895],  // Default to Tokyo's coordinates
+        zoom: 10
+      });
+
+      this.map.on('load', () => {
+        this.loadTyphoonData();  // Initially load the typhoon data
+      });
+    },
+    loadTyphoonData() {
+      this.map.addSource('data', {
+        'type': 'geojson',
+        'data': this.typhoonDataUrl
+      });
+
+      this.map.addLayer({
+        'id': 'data',
+        'type': 'circle',
+        'source': 'data',
+        'paint': {
+          'circle-radius': 6,
+          'circle-color': '#B42222'
+        }
+      });
+    },
+    loadOtherWeatherData() {
+      this.map.addSource('data', {
+        'type': 'geojson',
+        'data': this.otherWeatherDataUrl
+      });
+
+      this.map.addLayer({
+        'id': 'data',
+        'type': 'circle',
+        'source': 'data',
+        'paint': {
+          'circle-radius': 6,
+          'circle-color': '#2255B4'
+        }
+      });
+    },
+    toggleData() {
+      if (this.showingTyphoonData) {
+        this.map.removeLayer('data');
+        this.map.removeSource('data');
+        this.loadOtherWeatherData();
+      } else {
+        this.map.removeLayer('data');
+        this.map.removeSource('data');
+        this.loadTyphoonData();
+      }
+      this.showingTyphoonData = !this.showingTyphoonData;
+    }
+  }
+};
+</script>
