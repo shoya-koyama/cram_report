@@ -89,6 +89,32 @@ li {
 </style>
 これは Vue.js 3 の非常に基本的なサンプルコードです。Vue 3 は、Composition API などの新しい機能を持っていますが、上記のサンプルは Options API を使用しています。もし、Composition API のサンプルや他の詳細な例が必要であれば、お知らせください。
 
+//watch
+<template>
+  <div>
+    <input v-model="text" placeholder="Type something..." />
+    <p>You typed: {{ text }}</p>
+  </div>
+</template>
 
+<script>
+import { ref, watch } from 'vue';
+
+export default {
+  setup() {
+    const text = ref('');
+
+    watch(text, (newValue, oldValue) => {
+      console.log(`Text changed from "${oldValue}" to "${newValue}"`);
+    }, {
+      immediate: true  // 初期化時にもコールバックを実行
+    });
+
+    return {
+      text
+    }
+  }
+}
+</script>
 
 
