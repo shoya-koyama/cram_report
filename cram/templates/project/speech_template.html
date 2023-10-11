@@ -1,0 +1,18 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Chat Room</title>
+    <link rel="stylesheet" href="{% static 'cram/css/default.css' %}">
+</head>
+
+{% block content %}
+<textarea id="text">Hello. Nice to meet you.</textarea>
+<select id="voice-select"></select>
+<button id="speak-btn">Hi, Sirio</button>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'cram/js/speech.js' %}"></script>
+{% endblock %}

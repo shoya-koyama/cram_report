@@ -177,3 +177,6 @@ def upload_video(request):
 
 def room(request):
     return render(request, "project/room.html")
+
+def speech_view(request):
+    return render(request, 'project/speech_template.html')
