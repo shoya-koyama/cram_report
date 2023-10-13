@@ -8,7 +8,7 @@ urlpatterns = [
     path('<int:article_id>/update', views.update, name='update'),
     path('<int:article_id>/like', views.like, name='like'),
     path('api/articles/<int:article_id>/like', views.api_like),
-    path('chat/',views.room, name='room'),
+    path('<str:room_name>/',views.room, name='room'),
     path('speech_view/',views.speech_view, name='speech_view'),
 
     

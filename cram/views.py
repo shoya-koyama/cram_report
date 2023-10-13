@@ -7,13 +7,14 @@ from cram.models import Article, Comment
 from django.http import JsonResponse
 
 from googleapiclient.discovery import build
-import os
+#import os
 from django.core.files.storage import FileSystemStorage
 
 # YouTube Data APIの設定
 api_service_name = "youtube"
 api_version = "v3"
-api_key = "AIzaSyBq7E-kpQTQ2fHoou8953G2cPGnMMXfJTs"
+api_key = ""
+#api_key = os.getenv("YOUTUBE_API_KEY")
 youtube = build(api_service_name, api_version, developerKey=api_key)
 
 # Create your views here.
@@ -175,8 +176,8 @@ def upload_video(request):
     # メッセージ付きのページにリダイレクトするか、メッセージとともにここでテンプレートをレンダリングすることもできます。
 
 
-def room(request):
-    return render(request, "project/room.html")
+def room(request, room_name):
+    return render(request, "project/room.html", {"room_name": room_name})
 
 def speech_view(request):
     return render(request, 'project/speech_template.html')
