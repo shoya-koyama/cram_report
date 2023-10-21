@@ -1,5 +1,6 @@
 from django.urls import path, include
 from . import views
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
 	path('', views.index, name='index'),
@@ -10,8 +11,9 @@ urlpatterns = [
     path('api/articles/<int:article_id>/like', views.api_like),
     path('chat/<str:room_name>/',views.room, name='room'),
     path('speech_view/',views.speech_view, name='speech_view'),
+    path('word_read/',views.word_read, name='word_read'),
 
-    
+    path('accounts/login/', auth_views.LoginView.as_view(), name='login'),
 
 ]
 
