@@ -11,11 +11,13 @@ from googleapiclient.discovery import build
 from django.core.files.storage import FileSystemStorage
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.conf import settings
+
 
 # YouTube Data APIの設定
 api_service_name = "youtube"
 api_version = "v3"
-api_key = ""
+api_key = "AIzaSyBq7E-kpQTQ2fHoou8953G2cPGnMMXfJTs"
 #api_key = os.getenv("YOUTUBE_API_KEY")
 youtube = build(api_service_name, api_version, developerKey=api_key)
 
@@ -187,12 +189,15 @@ def search_videos(keyword, max_results=5):
     return videos
 
 def upload_video(request):
+    image_url = None
+
     if request.method == 'POST' and 'file' in request.FILES:
         myfile = request.FILES['file']
         fs = FileSystemStorage(location=settings.UPLOAD_FOLDER)
         filename = fs.save(myfile.name, myfile)
-        return HttpResponse('動画のアップロードが成功しました')
+        image_url = fs.url(filename)
 
+    return render(request, 'index.html', {'image_url': image_url})
     # メッセージ付きのページにリダイレクトするか、メッセージとともにここでテンプレートをレンダリングすることもできます。
 
 
