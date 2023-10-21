@@ -68,6 +68,10 @@
       <a href=""onclick="like({{article.id}});">
         ♡:<span id="like{{article.id}}">{{ article.like }}</span>
       </a>
+      <form action="{% url 'delete' article.id %}" method="POST">
+        {% csrf_token %}
+        <input type="submit" class="report-button" value="削除">
+    </form>
     </div>
     {% endfor %}
     {% else %}
