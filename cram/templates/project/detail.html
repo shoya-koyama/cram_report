@@ -63,6 +63,7 @@
       <a href="{% url 'index' %}" id="modoru">トップページ</a>
       <a href="{% url 'update' article.id %}" id="edit">投稿を編集</a>
       <a href="{% url 'delete' article.id %}" id="delete">投稿を削除</a>
+      <input type="button" class="report-button" value="印刷" onclick="window.print();" />
     </p>
   </div>
   <canvas id="radar-chart" height="70px"></canvas>
