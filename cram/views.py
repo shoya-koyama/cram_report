@@ -9,11 +9,13 @@ from django.http import JsonResponse
 from googleapiclient.discovery import build
 #import os
 from django.core.files.storage import FileSystemStorage
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 # YouTube Data APIの設定
 api_service_name = "youtube"
 api_version = "v3"
-api_key = ""
+api_key = "AIzaSyBq7E-kpQTQ2fHoou8953G2cPGnMMXfJTs"
 #api_key = os.getenv("YOUTUBE_API_KEY")
 youtube = build(api_service_name, api_version, developerKey=api_key)
 
@@ -115,6 +117,24 @@ def delete(request, article_id):
     
     return redirect(index)
 
+# @login_required
+# def delete(request, article_id):
+#     try:
+#         article = Article.objects.get(pk=article_id)
+
+#         # 記事のオーナーか、スーパーユーザーのみが削除できるようにします
+#         if request.user != article.owner and not request.user.is_superuser:
+#             messages.error(request, 'あなたにはこの記事を削除する権限がありません。')
+#             return redirect('index')
+
+#         article.delete()
+#         messages.success(request, '記事が正常に削除されました。')
+
+#     except Article.DoesNotExist:
+#         messages.error(request, '該当する記事が見つかりませんでした。')
+
+#     return redirect('index')
+
 
 def like(request, article_id):
     try:
@@ -181,3 +201,6 @@ def room(request, room_name):
 
 def speech_view(request):
     return render(request, 'project/speech_template.html')
+
+def word_read(request):
+    return render(request, 'project/word_read.html')
