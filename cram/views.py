@@ -22,32 +22,6 @@ api_key = ""
 youtube = build(api_service_name, api_version, developerKey=api_key)
 
 # Create your views here.
-"""
-def index(request):
-    if request.method == 'POST':
-        article = Article(title=request.POST['title'], body=request.POST['text'])
-        article.save()
-        
-        return redirect(detail, article.id)
-    
-    if ('sort' in request.GET):
-        if request.GET['sort'] == 'like':
-            articles = Article.objects.order_by('-like')
-        else:
-            articles = Article.objects.order_by('-posted_at')
-    else:
-        articles = Article.objects.order_by('-posted_at')
-        
-    context = {
-        "articles": articles,
-    
-    }
-    
-
-
-    return render(request, 'project/index.html', context)
-"""
-
 def index(request):
     videos = []
     if request.method == 'POST':
