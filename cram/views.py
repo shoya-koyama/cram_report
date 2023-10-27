@@ -17,7 +17,7 @@ from django.conf import settings
 # YouTube Data APIの設定
 api_service_name = "youtube"
 api_version = "v3"
-api_key = ""
+api_key = "AIzaSyBq7E-kpQTQ2fHoou8953G2cPGnMMXfJTs"
 #api_key = os.getenv("YOUTUBE_API_KEY")
 youtube = build(api_service_name, api_version, developerKey=api_key)
 
