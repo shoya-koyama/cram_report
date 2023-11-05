@@ -12,10 +12,12 @@
   <div style="text-align: center;">
     <h1>塾講師指導報告書</h1>
     <h3>悪用厳禁</h3>
-    <div style="text-align: center;">
-      <img src="https://icongr.am/feather/wifi.svg?size=60&color=currentColor" >
-    </div>
-    <p>こちらから報告せよ</p>
+    <p>
+      <a href="{% url 'speech_view' %}">
+        <img src="{% static 'cram/img/skyhigh.png' %}" width="240" height="180" alt="スピーチちゃんへ">
+      </a>
+    </p>
+    <p>👆スピーチちゃんへGO!!</p>
     <button id="start-btn">文字起こししてね</button>
     <button id="stop-btn">止めましょう</button>
     <div id="result-div"></div>
@@ -56,9 +58,6 @@
     </form>
     <p>※保護者様が不快に思うことを投稿するな。</p>
     <p>※悪用した場合、法的措置を取らせていただきます。</p>
-    <div>
-      <a href="{% url 'speech_view' %}" id="sort_new">スピーチちゃん</a>
-    </div>
     <br>
     <br>
     <div>
