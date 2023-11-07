@@ -32,17 +32,15 @@ def index(request):
             article = Article(title=request.POST['title'], body=request.POST['text'])
             article.save()
             return redirect(detail, article.id)
-        
-    else:  # Default keyword when loading the page for the first time (optional).
-        videos = search_videos("塾講師", max_results=10)
 
     articles = Article.objects.order_by('-posted_at')
     context = {
         "articles": articles,
-        "videos": videos,
+        "videos": videos,  
     }
 
     return render(request, 'project/index.html', context)
+
 
 
 
