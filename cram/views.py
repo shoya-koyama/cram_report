@@ -41,11 +41,6 @@ def index(request):
 
     return render(request, 'project/index.html', context)
 
-
-
-
-
-
 def detail(request, article_id):
     try:
         article = Article.objects.get(pk=article_id)
@@ -159,18 +154,16 @@ def search_videos(keyword, max_results=5):
         })
     return videos
 
-def upload_video(request):
-    image_url = None
+# def upload_video(request):
+#     image_url = None
 
-    if request.method == 'POST' and 'file' in request.FILES:
-        myfile = request.FILES['file']
-        fs = FileSystemStorage(location=settings.UPLOAD_FOLDER)
-        filename = fs.save(myfile.name, myfile)
-        image_url = fs.url(filename)
+#     if request.method == 'POST' and 'file' in request.FILES:
+#         myfile = request.FILES['file']
+#         fs = FileSystemStorage(location=settings.UPLOAD_FOLDER)
+#         filename = fs.save(myfile.name, myfile)
+#         image_url = fs.url(filename)
 
-    return render(request, 'index.html', {'image_url': image_url})
-    # メッセージ付きのページにリダイレクトするか、メッセージとともにここでテンプレートをレンダリングすることもできます。
-
+#     return render(request, 'index.html', {'image_url': image_url})
 
 def room(request, room_name):
     return render(request, "project/room.html", {"room_name": room_name})

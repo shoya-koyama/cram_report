@@ -153,4 +153,13 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
+cram/__pycache__
+cram/migrations
+
+requirements.txt
+
+Calendar.py
+Calendar2.py
+client_secret_600403627645-r3vitjjkd9u460mj82aoms0biqtk71q3.apps.googleusercontent.com.json
+mycalendarproject-430808-97c5aeae0d39.json
 # End of https://www.toptal.com/developers/gitignore/api/django
