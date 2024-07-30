@@ -6,6 +6,20 @@
 
     <link href="{% static 'cram/css/default.css' %}" rel="stylesheet">
     <script type="text/javascript" src="{% static 'cram/js/index.js' %}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('#fetch-title-btn').click(function(){
+                $.ajax({
+                    url: '{% url "fetch_google_calendar_event_title" %}',
+                    method: 'GET',
+                    success: function(data){
+                        $('#titleInput').val(data.title);
+                    }
+                });
+            });
+        });
+    </script>
 
   </head>
   <body>
@@ -20,13 +34,14 @@
     <p>👆スピーチちゃんへGO!!</p>
     <button id="start-btn">文字起こししてね</button>
     <button id="stop-btn">止めましょう</button>
+    <button id="fetch-title-btn">引用</button>
     <div id="result-div"></div>
 
     <form action="{% url 'index' %}" method="post">
       {% csrf_token %}
       <div>
-        <label for="titleInput">生徒氏名</label><br>
-        <input id="titleInput" name="title" type="text" row="1" placeholder="報告のタイトルを入力してね♡">
+        <label for="titleInput">生徒氏名：タイトル</label><br>
+        <input id="titleInput" name="title" type="text" row="1" placeholder="生徒氏名：タイトルを入力してね♡">
       </div>
       <div>
         <label for="textInput">詳細</label><br>

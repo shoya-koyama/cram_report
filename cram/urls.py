@@ -15,5 +15,7 @@ urlpatterns = [
 
     path('accounts/login/', auth_views.LoginView.as_view(), name='login'),
 
+    path('fetch-google-calendar-event-title/', views.fetch_google_calendar_event_title, name='fetch_google_calendar_event_title'),
+
 ]
 

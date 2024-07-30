@@ -6,6 +6,13 @@ from django.utils import timezone
 from cram.models import Article, Comment
 from django.http import JsonResponse
 
+import os
+import datetime
+import pickle
+
+from google.oauth2.credentials import Credentials
+from google_auth_oauthlib.flow import InstalledAppFlow
+from google.auth.transport.requests import Request
 from googleapiclient.discovery import build
 #import os
 from django.core.files.storage import FileSystemStorage
@@ -20,7 +27,41 @@ api_version = "v3"
 api_key = settings.YOUTUBE_API_KEY
 youtube = build(api_service_name, api_version, developerKey=api_key)
 
-# Create your views here.
+SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
+TOKEN_PATH = os.path.join('tokens', 'token.pickle')
+CREDENTIALS_PATH = 'credentials2.json'
+
+def get_google_calendar_events():
+    creds = None
+    if os.path.exists(TOKEN_PATH):
+        with open(TOKEN_PATH, 'rb') as token:
+            creds = Credentials.from_authorized_user(token, SCOPES)
+    if not creds or not creds.valid:
+        if creds and creds.expired and creds.refresh_token:
+            creds.refresh(Request())
+        else:
+            flow = InstalledAppFlow.from_client_secrets_file(CREDENTIALS_PATH, SCOPES)
+            creds = flow.run_local_server(port=0)
+        with open(TOKEN_PATH, 'wb') as token:
+            pickle.dump(creds, token)
+
+    service = build('calendar', 'v3', credentials=creds)
+    now = datetime.datetime.utcnow().isoformat() + 'Z'
+    end_of_day = (datetime.datetime.utcnow() + datetime.timedelta(days=1)).isoformat() + 'Z'
+    events_result = service.events().list(calendarId='primary', timeMin=now,
+                                          timeMax=end_of_day, singleEvents=True,
+                                          orderBy='startTime').execute()
+    events = events_result.get('items', [])
+    return events
+
+def fetch_google_calendar_event_title(request):
+    events = get_google_calendar_events()
+    if events:
+        title = events[0].get('summary', 'No Title')
+    else:
+        title = 'No Events'
+    return JsonResponse({'title': title})
+
 def index(request):
     videos = []
     if request.method == 'POST':
@@ -104,31 +145,31 @@ def delete(request, article_id):
 #     return redirect('index')
 
 
-def like(request, article_id):
-    try:
-        article = Article.objects.get(pk=article_id)
-        article.like += 1
-        article.save()
-    except Article.DoesNotExist:
-        raise Http404("Article does not exist")
+# def like(request, article_id):
+#     try:
+#         article = Article.objects.get(pk=article_id)
+#         article.like += 1
+#         article.save()
+#     except Article.DoesNotExist:
+#         raise Http404("Article does not exist")
     
-    return redirect(detail, article_id)
+#     return redirect(detail, article_id)
 
 
 
-def api_like(request, article_id):
-    try:
-        article = Article.objects.get(pk=article_id)
-        article.like += 1
-        article.save()
-    except Article.DoesNotExist:
-        raise Http404("Article does not exist")
-    result = {
-        'id' : article_id,
-        'like' : article.like
-    }
+# def api_like(request, article_id):
+#     try:
+#         article = Article.objects.get(pk=article_id)
+#         article.like += 1
+#         article.save()
+#     except Article.DoesNotExist:
+#         raise Http404("Article does not exist")
+#     result = {
+#         'id' : article_id,
+#         'like' : article.like
+#     }
 
-    return JsonResponse(result)
+#     return JsonResponse(result)
 
 def search_videos(keyword, max_results=5):
     request = youtube.search().list(
