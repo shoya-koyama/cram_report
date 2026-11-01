@@ -1,0 +1,27 @@
+{
+  "name": "cram_report",
+  "version": "1.0.0",
+  "description": "小山翔矢の制作物 塾講師及び生徒保護者用の報告書デモ 講師また保護者からのいいね機能搭載 掲示板のように生徒氏名が書かれた報告書が掲載される WEB SPEECH　APIにより、発言したものが文字起こしされ、テキストボックスに表示される デザイン強化 API連携",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test",
+    "test:chromium": "playwright test --project=chromium",
+    "test:ui": "playwright test --ui",
+    "test:headed": "playwright test --headed"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shoya-koyama/cram_report.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/shoya-koyama/cram_report/issues"
+  },
+  "homepage": "https://github.com/shoya-koyama/cram_report#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.64.1"
+  }
+}
