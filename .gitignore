@@ -154,9 +154,15 @@ dmypy.json
 cython_debug/
 
 cram/__pycache__
-cram/migrations
 
 requirements.txt
+
+# Node.js and Playwright
+node_modules/
+test-results/
+playwright-report/
+playwright.sqlite3
+.venv311/
 
 Calendar.py
 Calendar2.py
