@@ -15,65 +15,59 @@ permissions:
 jobs:
   playwright:
     runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      REPO_DIR: ${{ github.workspace }}/source
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
+      - name: Check out repository with GitHub CLI
+        run: gh repo clone "$GITHUB_REPOSITORY" "$REPO_DIR"
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
+      - name: Create Python 3.11 environment
+        run: |
+          "$CONDA/bin/conda" create --yes --prefix "$RUNNER_TEMP/python311" python=3.11 pip
+          echo "$RUNNER_TEMP/python311/bin" >> "$GITHUB_PATH"
 
       - name: Install Python dependencies
-        run: >-
-          python -m pip install
-          "Django==4.1.7"
-          python-decouple
-          django-environ
-          dj-database-url
-          whitenoise
-          django-reversion
-          django-import-export
-          google-auth
-          google-auth-oauthlib
+        run: |
+          cd "$REPO_DIR"
+          python -m pip install --upgrade pip
+          python -m pip install \
+          "Django==4.1.7" \
+          python-decouple \
+          django-environ \
+          dj-database-url \
+          whitenoise \
+          django-reversion \
+          django-import-export \
+          google-auth \
+          google-auth-oauthlib \
           google-api-python-client
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: npm
-
       - name: Install Node.js dependencies
-        run: npm ci
+        run: |
+          cd "$REPO_DIR"
+          npm ci
 
       - name: Install Chromium
-        run: npx playwright install --with-deps chromium
+        run: |
+          cd "$REPO_DIR"
+          npx playwright install --with-deps chromium
 
       - name: Run Playwright E2E
         id: e2e
         continue-on-error: true
-        run: npm run test:chromium
-
-      - name: Upload screenshots and test results
-        id: artifacts
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: playwright-screenshots-${{ github.run_id }}
-          path: test-results/
-          if-no-files-found: warn
-          retention-days: 7
+        run: |
+          cd "$REPO_DIR"
+          npm run test:chromium
 
       - name: Post screenshot and result to issue
         if: always()
         env:
           ISSUE_NUMBER: ${{ inputs.issue_number }}
           E2E_OUTCOME: ${{ steps.e2e.outcome }}
-          ARTIFACT_URL: ${{ steps.artifacts.outputs.artifact-url }}
-          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
+          cd "$REPO_DIR"
           screenshot="$(find test-results -type f -name '*.png' -print -quit || true)"
           outcome="${E2E_OUTCOME:-not run}"
           if [ "$outcome" = "success" ]; then
@@ -91,17 +85,12 @@ jobs:
             echo
             echo "- 実行結果: ${outcome}"
             echo "- [ワークフロー実行ログ](${run_url})"
-            if [ -n "$ARTIFACT_URL" ]; then
-              echo "- [テスト成果物（動画・トレース等）をダウンロード](${ARTIFACT_URL})"
-            fi
             if [ -n "$screenshot" ]; then
               echo
               echo "![Playwright screenshot](${screenshot})"
             else
               echo "- スクリーンショットは生成されませんでした。"
             fi
-            echo
-            echo "テスト成果物の保存期間は7日間です。"
           } > "$body_file"
 
           if [ -n "$screenshot" ]; then
