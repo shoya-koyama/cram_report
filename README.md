@@ -169,6 +169,10 @@ npx playwright show-report
 
 レポートは `playwright-report/` に、失敗時のスクリーンショット・動画・トレースなどは `test-results/` に保存されます。いずれもテスト実行時に生成される成果物で、Git 管理対象外です。
 
+### GitHub Actions から手動実行する
+
+`.github/workflows/playwright-issue.yml` の `Playwright E2E (manual)` を GitHub Actions 画面から選び、`Run workflow` で対象 Issue 番号を入力して実行します。Chromium のテスト結果とスクリーンショットが Issue にコメントされ、動画やトレースなどは Actions の成果物として7日間ダウンロードできます。このワークフローを手動実行するには、ワークフローファイルを既定ブランチにマージしておく必要があります。
+
 ### テストを追加する
 
 新しい E2E テストは `tests/` に `*.spec.ts` ファイルとして追加します。`page.goto('/')` でトップページを開き、`getByRole()` や `getByLabel()` などで操作し、`expect()` で結果を検証します。
