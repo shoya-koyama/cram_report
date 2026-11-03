@@ -9,8 +9,7 @@ on:
         type: number
 
 permissions:
-  contents: write
-  issues: write
+  contents: read
 
 jobs:
   playwright:
@@ -21,6 +20,15 @@ jobs:
     steps:
       - name: Check out repository with GitHub CLI
         run: gh repo clone "$GITHUB_REPOSITORY" "$REPO_DIR"
+
+      - name: Check screenshot upload token
+        env:
+          ATTACHMENT_TOKEN: ${{ secrets.GH_ATTACHMENT_TOKEN }}
+        run: |
+          if [ -z "$ATTACHMENT_TOKEN" ]; then
+            echo "Repository Actions secret GH_ATTACHMENT_TOKEN is required to attach screenshots to an issue." >&2
+            exit 1
+          fi
 
       - name: Create Python 3.11 environment
         run: |
@@ -65,6 +73,7 @@ jobs:
         env:
           ISSUE_NUMBER: ${{ inputs.issue_number }}
           E2E_OUTCOME: ${{ steps.e2e.outcome }}
+          GH_TOKEN: ${{ secrets.GH_ATTACHMENT_TOKEN }}
         run: |
           set -euo pipefail
           cd "$REPO_DIR"

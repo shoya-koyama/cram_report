@@ -171,7 +171,7 @@ npx playwright show-report
 
 ### GitHub Actions から手動実行する
 
-`.github/workflows/playwright-issue.yml` の `Playwright E2E (manual)` を GitHub Actions 画面から選び、`Run workflow` で対象 Issue 番号を入力して実行します。Chromium のテスト結果とスクリーンショットが Issue にコメントされ、実行ログへのリンクも記載されます。このワークフローを手動実行するには、ワークフローファイルを既定ブランチにマージしておく必要があります。
+`.github/workflows/playwright-issue.yml` の `Playwright E2E (manual)` を GitHub Actions 画面から選び、`Run workflow` で対象 Issue 番号を入力して実行します。Chromium のテスト結果とスクリーンショットが Issue にコメントされ、実行ログへのリンクも記載されます。このワークフローを手動実行するには、ワークフローファイルを既定ブランチにマージし、リポジトリの **Settings → Secrets and variables → Actions** に `GH_ATTACHMENT_TOKEN` という名前で Classic Personal Access Token を登録しておきます。トークンの所有者は対象リポジトリへの書き込み権限が必要です。画像添付に必要なため、このトークンを使います。
 
 ### テストを追加する
 
