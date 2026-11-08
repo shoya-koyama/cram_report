@@ -1,0 +1,90 @@
+# Dependabot 設定ファイル
+# 配置場所:
+# .github/dependabot.yml
+#
+# GitHub がこのファイルを読み取り、
+# 依存ライブラリや GitHub Actions の更新を自動監視します。
+#
+# 主な機能:
+# - 脆弱性検知
+# - 自動更新PR作成
+# - ライブラリ更新提案
+#
+# 公式:
+# https://docs.github.com/en/code-security/dependabot
+
+# Dependabot 設定フォーマットVersion
+#
+# 現在 GitHub で使用されているのは version: 2
+version: 2
+
+# 更新監視ルール一覧
+updates:
+
+  # ============================================================
+  # Node.js / pnpm / npm / yarn 系依存関係
+  # ============================================================
+  #
+  # "npm" ecosystem は:
+  # - npm
+  # - pnpm
+  # - yarn
+  #
+  # をまとめて扱います。
+  #
+  # Nuxt + pnpm 構成でも "npm" を使用します。
+  #
+  # 監視対象:
+  # - package.json
+  # - pnpm-lock.yaml
+  #
+  # 更新対象例:
+  # - Nuxt
+  # - Vue
+  # - ESLint
+  # - Prettier
+  # - TypeScript
+  #
+  - package-ecosystem: "npm"
+
+    # 監視対象ディレクトリ
+    #
+    # "/" はリポジトリルートを意味します。
+    directory: "/"
+
+    # 更新チェック頻度
+    schedule:
+
+      # 毎週更新チェック
+      #
+      # daily:
+      #   更新PRが大量発生しやすい
+      #
+      # monthly:
+      #   更新が溜まりやすい
+      #
+      # 現在は weekly がかなり一般的
+      interval: "weekly"
+
+  # ============================================================
+  # GitHub Actions 更新監視
+  # ============================================================
+  #
+  # .github/workflows/*.yml
+  #
+  # 内の GitHub Actions version を監視します。
+  #
+  # 例:
+  # uses: actions/checkout@v4
+  #
+  # の更新など。
+  #
+  - package-ecosystem: "github-actions"
+
+    # workflow ファイルは通常 repo root 配下なので "/"
+    directory: "/"
+
+    schedule:
+
+      # 毎週更新チェック
+      interval: "weekly"
